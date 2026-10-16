@@ -3,6 +3,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import WorkerProfilePage from './pages/WorkerProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
+import SkillProfiler from './components/SkillProfiler';
 
 function NavigationBar() {
   const navigate = useNavigate();
@@ -16,7 +17,14 @@ function NavigationBar() {
 
   return (
     <nav style={{ padding: '15px 30px', background: '#f8fafc', display: 'flex', gap: '20px', alignItems: 'center', borderBottom: '1px solid #e2e8f0' }}>
-      <span style={{ fontWeight: 'bold', fontSize: '18px', color: '#0f172a' }}>Digital Labour Marketplace</span>
+      <span style={{ fontWeight: 'bold', fontSize: '18px', color: '#0f172a' }}>
+        Digital Labour Marketplace
+      </span>
+
+      {/* AI Skill Profiler ka link Hamesha Navigation Bar mein dikhane ke liye */}
+      <Link to="/ai-skills" style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold', marginLeft: '20px' }}>
+        AI Skill Profiler
+      </Link>
 
       {!token ? (
         <div style={{ marginLeft: 'auto', display: 'flex', gap: '15px' }}>
@@ -54,6 +62,9 @@ export default function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        
+        {/* Module 2: AI Skill Profiler Route */}
+        <Route path="/ai-skills" element={<SkillProfiler />} />
 
         {/* Worker Only */}
         <Route
