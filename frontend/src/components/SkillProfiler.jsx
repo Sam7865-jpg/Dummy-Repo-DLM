@@ -11,7 +11,8 @@ export default function SkillProfiler() {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const { data } = await API.get('/worker/skills');
+        // '/worker/skills' ki jagah '/workers/skills' kar diya hai
+        const { data } = await API.get('/workers/skills');
         if (data) {
           setExperienceText(data.experienceText || '');
           setExtractedSkills(data.extractedSkills || []);
@@ -28,7 +29,8 @@ export default function SkillProfiler() {
   const handleAIExtract = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post('/worker/extract-skills', { experienceText });
+      // '/worker/extract-skills' ki jagah '/workers/extract-skills' kar diya hai
+      const { data } = await API.post('/workers/extract-skills', { experienceText });
       setMessage(data.message);
       
       const skills = data.skillProfile ? data.skillProfile.extractedSkills : data.extractedSkills;

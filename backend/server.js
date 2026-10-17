@@ -19,10 +19,10 @@ app.use(cors({
 
 app.use(express.json());
 
-// Routes register karein
+// Routes register karein (Frontend requests ke sath match karne ke liye 'workers' use kiya hai)
 app.use('/api/auth', authRoutes);
-app.use('/api/worker', workerRoutes);
-app.use('/api/worker', skillRoutes);
+app.use('/api/workers', workerRoutes);
+app.use('/api/workers', skillRoutes);
 
 const PORT = process.env.PORT || 5000;
 
