@@ -21,11 +21,6 @@ function NavigationBar() {
         Digital Labour Marketplace
       </span>
 
-      {/* AI Skill Profiler ka link Hamesha Navigation Bar mein dikhane ke liye */}
-      <Link to="/ai-skills" style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold', marginLeft: '20px' }}>
-        AI Skill Profiler
-      </Link>
-
       {!token ? (
         <div style={{ marginLeft: 'auto', display: 'flex', gap: '15px' }}>
           <Link to="/register" style={{ textDecoration: 'none', color: '#2563eb' }}>Register</Link>
@@ -34,9 +29,14 @@ function NavigationBar() {
       ) : (
         <div style={{ marginLeft: 'auto', display: 'flex', gap: '20px', alignItems: 'center' }}>
           {user.role === 'worker' && (
-            <Link to="/worker-profile" style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold' }}>
-              My Worker Profile
-            </Link>
+            <>
+              <Link to="/ai-skills" style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold' }}>
+                AI Skill Profiler
+              </Link>
+              <Link to="/worker-profile" style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold' }}>
+                My Worker Profile
+              </Link>
+            </>
           )}
           {user.role === 'customer' && (
             <Link to="/customer-dashboard" style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold' }}>
@@ -63,8 +63,15 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         
-        {/* Module 2: AI Skill Profiler Route */}
-        <Route path="/ai-skills" element={<SkillProfiler />} />
+        {/* Module 2: AI Skill Profiler Route (Ab Protected hai, sirf worker access kar sakega) */}
+        <Route
+          path="/ai-skills"
+          element={
+            <ProtectedRoute allowedRole="worker">
+              <SkillProfiler />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Worker Only */}
         <Route

@@ -54,9 +54,10 @@ export const extractAndSaveSkills = async (req, res) => {
       });
     }
 
+    // UPDATE: Poori profile return kar rahe hain taake frontend par structured profile show ho sakay
     res.json({
-      message: 'AI ne kamyabi se skills extract kar li hain!',
-      extractedSkills: skillProfile.extractedSkills
+      message: 'AI ne kamyabi se structured profile taiyar aur save kar di hai!',
+      skillProfile
     });
 
   } catch (error) {
