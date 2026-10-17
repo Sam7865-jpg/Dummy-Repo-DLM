@@ -5,10 +5,9 @@ export default function SkillProfiler() {
   const [experienceText, setExperienceText] = useState('');
   const [extractedSkills, setExtractedSkills] = useState([]);
   const [message, setMessage] = useState('');
-  const [showDetailModal, setShowDetailModal] = useState(false); // Detail modal open/close state
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [userData, setUserData] = useState({});
 
-  // Pehle se save ki hui skills load karna
   useEffect(() => {
     const fetchSkills = async () => {
       try {
@@ -17,7 +16,6 @@ export default function SkillProfiler() {
           setExperienceText(data.experienceText || '');
           setExtractedSkills(data.extractedSkills || []);
         }
-        // Local user info fetch karna
         const localUser = JSON.parse(localStorage.getItem('user') || '{}');
         setUserData(localUser);
       } catch (err) {
@@ -40,9 +38,44 @@ export default function SkillProfiler() {
     }
   };
 
+  // Function to return RELEVANT skill suggestions based on worker's field/experience
+  const getRelevantSuggestions = () => {
+    const text = (experienceText + " " + extractedSkills.map(s => s.skillName).join(" ")).toLowerCase();
+    
+    if (text.includes('electric') || text.includes('wiring') || text.includes('current') || text.includes('bijli')) {
+      return [
+        'Advanced Circuit Troubleshooting', 
+        'Solar Panel Installation & Maintenance', 
+        'Industrial Electrical Safety Standards', 
+        'Smart Home Automation Wiring'
+      ];
+    } else if (text.includes('plumb') || text.includes('pipe') || text.includes('water') || text.includes('sanitary') || text.includes('nal')) {
+      return [
+        'Advanced Pipe Fitting & Welding', 
+        'Modern Drainage System Design', 
+        'Water Filtration & Pump Maintenance', 
+        'Advanced Sanitary Installation'
+      ];
+    } else if (text.includes('mason') || text.includes('brick') || text.includes('mistry') || text.includes('construction') || text.includes('cement')) {
+      return [
+        'Civil Engineering Fundamentals Course', 
+        'Advanced Blueprint & Plan Reading', 
+        'Structural Safety Standards & OSHA', 
+        'Project Cost Estimation & Budgeting'
+      ];
+    } else {
+      return [
+        'Advanced Professional Certification', 
+        'Safety Standards & Compliance', 
+        'Client Communication & Quality Assurance', 
+        'Emergency Quick Response Management'
+      ];
+    }
+  };
+
   return (
     <div style={{ maxWidth: '800px', margin: '30px auto', padding: '30px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
-      <h2 style={{ color: '#0f172a', marginBottom: '8px' }}>Module 2: AI Experience & Skill Profiler 🤖</h2>
+      <h2 style={{ color: '#0f172a', marginBottom: '8px', fontSize: '24px', fontWeight: 'bold' }}>AI Experience & Skill Profiler</h2>
       <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '20px' }}>
         Apna tajurba ya kaam ki tafseel yahan likhein, AI aapka data analyze karke ek professional structured profile taiyar karega:
       </p>
@@ -55,7 +88,7 @@ export default function SkillProfiler() {
           placeholder="Misal: Main 5 saal se wiring, circuit breaker fixing aur ac repair ka kaam kar raha hoon..." 
           value={experienceText} 
           onChange={(e) => setExperienceText(e.target.value)}
-          style={{ width: '100%', padding: '12px', marginBottom: '15px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '15px', outline: 'none' }}
+          style={{ width: '100%', padding: '12px', marginBottom: '15px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }}
         />
         <button type="submit" style={{ width: '100%', padding: '12px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', fontSize: '15px' }}>
           Generate & Save Structured Profile 🚀
@@ -109,7 +142,7 @@ export default function SkillProfiler() {
         }}>
           <div style={{
             background: 'white', padding: '30px', borderRadius: '12px', width: '90%', maxWidth: '600px',
-            boxShadow: '0 10px 25px rgba(0,0,0,0.2)', position: 'relative', animation: 'fadeIn 0.3s'
+            boxShadow: '0 10px 25px rgba(0,0,0,0.2)', position: 'relative', maxHeight: '90vh', overflowY: 'auto'
           }}>
             
             {/* Close Button */}
@@ -156,6 +189,25 @@ export default function SkillProfiler() {
                 ))}
               </div>
             </div>
+
+            {/* --- AI POTENTIAL SKILL SUGGESTIONS SECTION (RELEVANT & DYNAMIC) --- */}
+            {extractedSkills.length > 0 && (
+              <div style={{ marginBottom: '25px', background: '#fefce8', border: '1px solid #fde047', borderRadius: '10px', padding: '18px' }}>
+                <h4 style={{ color: '#854d0e', marginBottom: '6px', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  💡 AI Potential Skill Suggestions (Relevant to Your Field)
+                </h4>
+                <p style={{ fontSize: '13px', color: '#713f12', marginBottom: '12px' }}>
+                  Based on your entered experience, these relevant professional courses and certified skills will help you enhance your profile quality:
+                </p>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {getRelevantSuggestions().map((suggestion, idx) => (
+                    <span key={idx} style={{ background: '#fef08a', color: '#713f12', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: '600', border: '1px solid #facc15' }}>
+                      ✨ {suggestion}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Close Modal Button */}
             <button 

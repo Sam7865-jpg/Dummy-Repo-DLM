@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://effective-pancake-v6595g6g6wrphw477-5000.app.github.dev/api'
+  baseURL: '/api',
 });
 
 // Har request ke sath login token automatically bhejna

@@ -9,15 +9,20 @@ import authRoutes from './routes/authRoutes.js';
 import workerRoutes from './routes/workerRoutes.js';
 import skillRoutes from './routes/skillRoutes.js';
 
-const app = express(); // Pehle app initialize hoga
+const app = express();
 
-app.use(cors());
+// CORS configuration (Codespaces ke dynamic URLs aur credentials ke liye)
+app.use(cors({
+  origin: true, // Kisi bhi dynamic origin/codespace ko allow karega
+  credentials: true
+}));
+
 app.use(express.json());
 
-// Routes register karein (app.use se)
+// Routes register karein
 app.use('/api/auth', authRoutes);
 app.use('/api/worker', workerRoutes);
-app.use('/api/worker', skillRoutes); // Ya app.use('/api/skills', skillRoutes);
+app.use('/api/worker', skillRoutes);
 
 const PORT = process.env.PORT || 5000;
 
